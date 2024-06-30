@@ -39,7 +39,7 @@ Public Sub SetItem(button As CommandButton, r_slider As Slider _
   
 
     colorCode = CLng(xml.getXml(Item)(0))
-2
+
     If xml.getXml(parentNode)(0) = "True" Then
         label.ForeColor = 255
     End If
@@ -63,13 +63,13 @@ Private Function conversionToColorCode(r As Integer, g As Integer, b As Integer)
     
     
     
-    ' Ô‚Ì¬•ª‚ğŒvZ
+    ' èµ¤ã®æˆåˆ†ã‚’è¨ˆç®—
     bb = CLng(b) * 65536
     
-    ' —Î‚Ì¬•ª‚ğŒvZ
+    ' ç·‘ã®æˆåˆ†ã‚’è¨ˆç®—
     gg = CLng(g) * 256
     
-    ' Â‚Ì¬•ª‚ğŒvZ
+    ' é’ã®æˆåˆ†ã‚’è¨ˆç®—
     conversionToColorCode = bb + gg + CLng(r)
 End Function
 
@@ -102,13 +102,13 @@ Private Function conversionToRGB() As Variant
     Dim b As Long, g As Long, r As Long
     
     
-    ' Ô‚Ì¬•ª‚ğŒvZ
+    ' èµ¤ã®æˆåˆ†ã‚’è¨ˆç®—
     b = colorCode \ 65536
     
-    ' —Î‚Ì¬•ª‚ğŒvZ
+    ' ç·‘ã®æˆåˆ†ã‚’è¨ˆç®—
     g = (colorCode \ 256) Mod 256
     
-    ' Â‚Ì¬•ª‚ğŒvZ
+    ' é’ã®æˆåˆ†ã‚’è¨ˆç®—
     r = colorCode Mod 256
     
     arr = Array(r, g, b)
