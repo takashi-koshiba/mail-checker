@@ -7,9 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'withevents as outlook.mailitem で propetychangeあり
-'それを使って自分自身のプロパティが変わったらプロパティを上書きしたらよいのでは
-'そのあとはselectionchangeやItemchangeでItem配列を更新したらよいのでは
+
 
 Option Explicit
 Private WithEvents tgtCtrl As Outlook.Items
