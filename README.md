@@ -1,2 +1,3 @@
-# outlook-mail-checker
+# mail-checker
+
 メールの件数を表示
