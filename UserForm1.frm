@@ -14,6 +14,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
+
 Option Explicit
 
 'Private WithEvents InboxItems As Outlook.Items
@@ -70,7 +71,8 @@ Private Sub allowed_folderList_Click()
         If allowed_folderList.ListItems.Item(i).Selected Then
         
             Dim IsGetNewMailListValue As Boolean
-            IsGetNewMailListValue = allowed_folderList.ListItems.Item(i).ListSubItems(1).text
+            
+            IsGetNewMailListValue = allowed_folderList.ListItems.Item(i).ListSubItems(1).Text
         
         
             If IsGetNewMailListValue Then
@@ -80,7 +82,7 @@ Private Sub allowed_folderList_Click()
             End If
         
             Dim IsGetNoflagMail As Boolean
-            IsGetNoflagMail = allowed_folderList.ListItems.Item(i).ListSubItems(2).text
+            IsGetNoflagMail = allowed_folderList.ListItems.Item(i).ListSubItems(2).Text
          
             If IsGetNoflagMail Then
                 FlagToggleButton.Caption = "フラグを確認する"
@@ -178,7 +180,7 @@ End Function
 Private Sub exclusion_of_sender_mail_button_Click()
 
     Dim subject
-     subject = exclusion_of_sender_subject_textbox.text
+     subject = exclusion_of_sender_subject_textbox.Text
     
     If subject = "" Then
         MsgBox "文字列を入力してください"
@@ -198,7 +200,7 @@ Private Sub exclusion_of_sender_mail_button_Click()
             
             Dim i As Integer
             For i = 0 To listCount - 1
-                arr(i) = exclusion_of__mailSubject_list.ListItems.Item(i + 1).text
+                arr(i) = exclusion_of__mailSubject_list.ListItems.Item(i + 1).Text
             Next i
             
         End If
@@ -215,7 +217,7 @@ Private Sub exclusion_of_sender_mail_button_Click()
             Else
             
                 exclusion_of__mailSubject_list.ListItems.Add , , subject
-                exclusion_of_sender_subject_textbox.text = ""
+                exclusion_of_sender_subject_textbox.Text = ""
       
             End If
         
@@ -242,7 +244,7 @@ Dim list As Variant
     If exclusion_of__mailSubject_list.ListItems.count > 0 Then
         For i = 1 To exclusion_of__mailSubject_list.ListItems.count
             If exclusion_of__mailSubject_list.ListItems.Item(i).Selected Then
-            ans = MsgBox("""" & exclusion_of__mailSubject_list.ListItems.Item(i).text & """" & "を削除しますか？", vbYesNo)
+            ans = MsgBox("""" & exclusion_of__mailSubject_list.ListItems.Item(i).Text & """" & "を削除しますか？", vbYesNo)
            
                 If ans = vbYes Then
                     
@@ -402,16 +404,16 @@ Private Sub ToggleButton(list As listview, button As CommandButton, subItemIndex
  'リストが選択されているか
     If Not list.selectedItem Is Nothing Then
         Dim value As Boolean
-        value = list.selectedItem.ListSubItems(subItemIndex).text
+        value = list.selectedItem.ListSubItems(subItemIndex).Text
         
         Dim ans As Integer
         ans = MsgBox(button.Caption & "に変更しますか。", vbYesNo)
     
         If ans = vbYes Then
             If value = 0 Then
-                list.selectedItem.ListSubItems(subItemIndex).text = True
+                list.selectedItem.ListSubItems(subItemIndex).Text = True
             Else
-                list.selectedItem.ListSubItems(subItemIndex).text = False
+                list.selectedItem.ListSubItems(subItemIndex).Text = False
             End If
         End If
     Else
@@ -608,7 +610,7 @@ Private Function AddBoldItemToArray(arr As Variant, list As listview) As Variant
         For Each Item In list.ListItems
             If Item.Bold Then
                 ReDim arr(UBound(arr))
-                arr(UBound(arr)) = Item.text & "\" & Item.ListSubItems(1).text
+                arr(UBound(arr)) = Item.Text & "\" & Item.ListSubItems(1).Text
             End If
         Next Item
         
@@ -616,95 +618,92 @@ Private Function AddBoldItemToArray(arr As Variant, list As listview) As Variant
 End Function
 
 
-
-'すべてのメーリングリストをループ
 Public Sub Add_mail(list_of_exclusionMode As Boolean)
-    ReDim subfolderCtl(allowed_folderList.ListItems.count)
-    Dim result
-
     Dim countNotExistFolder As Integer
-                               
+    Dim arrUnRead As Variant
+    Dim arrNewMail As Variant
+    Dim existAllowFolderArr As Variant
     
-        Dim arrUnRead As Variant
-        arrUnRead = AddBoldItemToArray(arrUnRead, unRead_item_listview)
-        
-        Dim arrNewMail As Variant
-        arrNewMail = AddBoldItemToArray(arrNewMail, newMailListView)
-        
-        unRead_item_listview.ListItems.Clear
-        
-        newMailListView.ListItems.Clear
-        If list_of_exclusionMode = True Then
-            list_of_exclusion.ListItems.Clear
-        End If
-     
-
-
-        Dim arr() As String
+    ReDim subfolderCtl(allowed_folderList.ListItems.count)
     
-        
-        Dim existAllowFolderArr As Variant
-        
-        If allowed_folderList.ListItems.count > 0 Then
-        
-            ReDim existAllowFolderArr(allowed_folderList.ListItems.count - 1)
-        
-            Dim MailBox As Outlook.MAPIFolder
-            Dim listIndex As Integer
-            listIndex = 0
-            Dim listIndex2 As Integer
-            listIndex2 = 0
-            For Each MailBox In namespace.Folders  'アカウントの数だけ繰り返す
-               
-                Dim MailBox_Item As Outlook.MAPIFolder
-                
-                Call run_subfolder(MailBox, list_of_exclusionMode, MailBox.Name, countNotExistFolder, listIndex, existAllowFolderArr)  ' 関数を実行
-            
-            
-              
-                listIndex2 = listIndex2 + 1
-            Next MailBox
-        
-
-            'existAllowFolderArrがリストに存在しない場合はその項目の色を赤にする
-            Dim Item As Variant
-            For Each Item In allowed_folderList.ListItems
-                Dim i As Integer
-                i = 1
-            
-                Dim ExistItem As Variant
-                For Each ExistItem In existAllowFolderArr
-                    Dim notExist As Boolean
-                    
-                    
-                    If IsEmpty(ExistItem) Then
-                        allowed_folderList.ListItems.Item(i).ForeColor = 255
-                        notExist = True
-                    End If
-                    i = i + 1
-                Next ExistItem
-            
-            Next Item
-        
-            If notExist Then
-                MsgBox "存在しないフォルダが指定されています。", vbInformation
-            End If
-        
-        
-            'リストの太字を元に戻す
-            Dim ii As Integer
-        
-            For ii = 0 To UBound(arrUnRead)
-                Call toggleFontWeightOfListItems(Me.unRead_item_listview, arrUnRead(ii), True)
-            Next ii
-        
-            For ii = 0 To UBound(arrNewMail)
-                Call toggleFontWeightOfListItems(Me.newMailListView, arrNewMail(ii), True)
-            Next ii
-      
-        
-        End If
+    'リストの太字を保存
+    arrUnRead = AddBoldItemToArray(arrUnRead, unRead_item_listview)
+    arrNewMail = AddBoldItemToArray(arrNewMail, newMailListView)
+    
+    'リストをクリア
+    unRead_item_listview.ListItems.Clear
+    newMailListView.ListItems.Clear
+    If list_of_exclusionMode Then
+        list_of_exclusion.ListItems.Clear
+    End If
+    
+    '配列の初期化
+    InitializeExistAllowFolderArr existAllowFolderArr
+    
+    '各メールボックスを処理
+    ProcessMailBoxes list_of_exclusionMode, countNotExistFolder, existAllowFolderArr
+    
+    'リストが存在する場合の処理
+    If allowed_folderList.ListItems.count > 0 Then
+        ReDim Preserve existAllowFolderArr(allowed_folderList.ListItems.count - 1)
+        HighlightNonExistentFolders existAllowFolderArr
+        ResetBoldFont arrUnRead, arrNewMail
         Call changeBackGroundColor
+    End If
+End Sub
+
+Private Sub InitializeExistAllowFolderArr(ByRef existAllowFolderArr As Variant)
+    If allowed_folderList.ListItems.count > 0 Then
+        ReDim existAllowFolderArr(allowed_folderList.ListItems.count - 1)
+    Else
+        ReDim existAllowFolderArr(0)
+    End If
+End Sub
+
+Private Sub ProcessMailBoxes(ByVal list_of_exclusionMode As Boolean, ByRef countNotExistFolder As Integer, ByRef existAllowFolderArr As Variant)
+    Dim MailBox As Outlook.MAPIFolder
+    Dim listIndex As Integer
+    listIndex = 0
+    
+    For Each MailBox In namespace.Folders
+        Call run_subfolder(MailBox, list_of_exclusionMode, MailBox.Name, countNotExistFolder, listIndex, existAllowFolderArr)
+    Next MailBox
+End Sub
+
+Private Sub HighlightNonExistentFolders(ByVal existAllowFolderArr As Variant)
+    Dim Item As Variant
+    Dim notExist As Boolean
+    Dim ExistItem As Variant
+    
+    For Each Item In allowed_folderList.ListItems
+        notExist = True
+        For Each ExistItem In existAllowFolderArr
+            If Not IsEmpty(ExistItem) Then
+                notExist = False
+                Exit For
+            End If
+        Next ExistItem
+        
+        If notExist Then
+            allowed_folderList.ListItems.Item(Item.index).ForeColor = vbRed
+        End If
+    Next Item
+    
+    If notExist Then
+        MsgBox "メールフォルダの取得に失敗しました。", vbInformation
+    End If
+End Sub
+
+Private Sub ResetBoldFont(ByVal arrUnRead As Variant, ByVal arrNewMail As Variant)
+    Dim ii As Integer
+    
+    For ii = 0 To UBound(arrUnRead)
+        Call toggleFontWeightOfListItems(Me.unRead_item_listview, arrUnRead(ii), True)
+    Next ii
+    
+    For ii = 0 To UBound(arrNewMail)
+        Call toggleFontWeightOfListItems(Me.newMailListView, arrNewMail(ii), True)
+    Next ii
 End Sub
 
 
@@ -780,37 +779,47 @@ Private Sub AddConfigToList(list As listview)
     IsNoFlag = xml.getXml("IsNoFlag")
     
     Dim listItem As MSComctlLib.listItem
-    list.ListItems.Clear
+    
     
     Dim i As Integer
     i = 1
-    '設定ファイルの要素数が一致するか
-    If UBound(allowedFolder) = UBound(IsNotNewMail) And UBound(IsNotNewMail) = UBound(IsNoFlag) Then
     
+    If Not IsEmpty(allowedFolder(0)) Then
+        '設定ファイルの要素数が一致するか
+        If UBound(allowedFolder) = UBound(IsNotNewMail) And UBound(IsNotNewMail) = UBound(IsNoFlag) Then
         
-        For Each str In allowedFolder
-            Call list.ListItems.Add(, , str)
-            list.ListItems.Item(i).SubItems(1) = IsNotNewMail(i - 1)
-            list.ListItems.Item(i).SubItems(2) = IsNoFlag(i - 1)
+
+        
+        
+            For Each str In allowedFolder
+            
+                Call list.ListItems.Add(, , str)
+                list.ListItems.Item(i).SubItems(1) = IsNotNewMail(i - 1)
+                list.ListItems.Item(i).SubItems(2) = IsNoFlag(i - 1)
          
-            i = i + 1
-        Next str
-    Else
+                 i = i + 1
+
+            Next str
+        Else
         
-        For Each str In allowedFolder
-            Call list.ListItems.Add(, , str)
-            list.ListItems.Item(i).SubItems(1) = False
-            list.ListItems.Item(i).SubItems(2) = False
+            For Each str In allowedFolder
+                Call list.ListItems.Add(, , str)
+                list.ListItems.Item(i).SubItems(1) = False
+                list.ListItems.Item(i).SubItems(2) = False
          
-            i = i + 1
-        Next str
+                i = i + 1
+            Next str
         
-        MsgBox "設定ファイルに問題があります。"
+            MsgBox "設定ファイルに問題があります。"
+        End If
     End If
+        
+    
+    
     
 
        
-    
+
 
   
     
@@ -983,7 +992,7 @@ End Sub
 Private Sub toggleFontWeightOfListItems(list As listview, ByVal folderPath As String, ByVal IsBold As Boolean)
         Dim Item As Variant
         For Each Item In list.ListItems
-            If Item.text & "\" & Item.ListSubItems(1).text = folderPath Then
+            If Item.Text & "\" & Item.ListSubItems(1).Text = folderPath Then
                Call ChangeItemBold(Item, IsBold)
             End If
         Next Item
@@ -1034,7 +1043,7 @@ Public Function ReplaceListItem(list As listview, folder As folder, subfolder As
         '同じリストが存在するかの確認
         For index = 1 To list.ListItems.count
             Dim ListStr As String
-            ListStr = list.ListItems(index).text & list.ListItems(index).SubItems(1)
+            ListStr = list.ListItems(index).Text & list.ListItems(index).SubItems(1)
                 
             If ListStr = folder.folderPath & subfolder.Name Then
                 list.ListItems.Item(index) = folder.folderPath
@@ -1204,7 +1213,7 @@ Private Function IsExistExclusion_of__mailSubject(mailSubject As String) As Bool
     result = False
     
     For Each Item In exclusion_of__mailSubject_list.ListItems
-        If Item.text = mailSubject Then
+        If Item.Text = mailSubject Then
             result = True
             Exit For
         End If

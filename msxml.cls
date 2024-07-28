@@ -47,7 +47,7 @@ Public Function getXml(element As String) As Variant
         ReDim result_array(elements.Length - 1)
 
         For i = 0 To elements.Length - 1
-            result_array(i) = elements.Item(i).text
+            result_array(i) = elements.Item(i).Text
         Next i
 
         
@@ -105,7 +105,7 @@ Public Sub AddSubItemToRoot(list As listview, parentNode As String, element As S
         If IsNull(str) Then Exit For
         
         Set node = xml.createElement(element)
-        node.text = str.SubItems(index)
+        node.Text = str.SubItems(index)
         nodes.appendChild node
     Next str
 
@@ -123,7 +123,7 @@ Public Sub AddItemToRoot(list As listview, parentNode As String, element As Stri
         If IsNull(str) Then Exit For
         
         Set node = xml.createElement(element)
-        node.text = str
+        node.Text = str
         nodes.appendChild node
     Next str
 End Sub
@@ -136,7 +136,7 @@ Public Sub writeXmlColor(parentNode As String, element As String, colorCode As L
    
         
     Set node = xml.createElement(element)
-    node.text = colorCode
+    node.Text = colorCode
     nodes.appendChild node
 End Sub
 
@@ -149,7 +149,7 @@ Public Sub writeXmlEnableColor(parentNode As String, element As String, flag As 
    
         
     Set node = xml.createElement(element)
-    node.text = CStr(flag)
+    node.Text = CStr(flag)
     nodes.appendChild node
 End Sub
 
@@ -207,10 +207,10 @@ Dim list As Variant
         
             If del_list.ListItems.Item(i).Selected Then
                 flag = True
-                ans = MsgBox("""" & del_list.ListItems.Item(i).text & """" & "Ç" & txt & "ÇµÇ‹Ç∑Ç©ÅH", vbYesNo)
+                ans = MsgBox("""" & del_list.ListItems.Item(i).Text & """" & "Ç" & txt & "ÇµÇ‹Ç∑Ç©ÅH", vbYesNo)
            
                 If ans = vbYes Then
-                    Call add_list.ListItems.Add(, , del_list.ListItems.Item(i).text)
+                    Call add_list.ListItems.Add(, , del_list.ListItems.Item(i).Text)
                     
                     If Not IsDel Then
                         add_list.ListItems.Item(add_list.ListItems.count).SubItems(1) = False
