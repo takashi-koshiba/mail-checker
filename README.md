@@ -1,3 +1,3 @@
 # mail-checker
 
-メールの件数を表示
+Outlookメールの件数を表示します。
