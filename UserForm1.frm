@@ -13,6 +13,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Option Explicit
 
 'Private WithEvents InboxItems As Outlook.Items
@@ -1015,10 +1016,10 @@ End Sub
 
 
 'ÅIXV“ú‚ğ‘‚«Š·‚¦‚é
-Private Sub lastReceivedTimeOfItem(ByVal Item As Variant, listTime As Date)
+Public Sub lastReceivedTimeOfItem(ByVal Item As Variant, listTime As Date)
     
     If listTime < Item.ReceivedTime Then
-        listTime = Item.ReceivedTime
+         listTime = Item.ReceivedTime
     End If
     
 End Sub

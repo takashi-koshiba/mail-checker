@@ -7,6 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = True
+
 Option Explicit
 
 Private form As UserForm1
@@ -14,9 +15,9 @@ Private form As UserForm1
 
 
 Private Sub Application_Startup()
-    Set form = New UserForm1
+    ''Set form = New UserForm1
 
-    form.Show vbModeless
+   '' form.Show vbModeless
    
 End Sub
 

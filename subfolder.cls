@@ -52,12 +52,35 @@ End Sub
 
 Private Sub tgtCtrl_ItemAdd(ByVal Item As Object)
     Call setmail(Item)
-    Call setMailToList
+    
+    Dim lastUpdate As Date
+    
+    lastUpdate = GetLastReceivedTime(mail)
+    
+    
+    
+    Call setMailToList(lastUpdate)
 End Sub
+
+
+Private Function GetLastReceivedTime(mail() As Outlook.mailItem) As Date
+    Dim lastUpdated As Date
+    lastUpdated = DateValue("2000/01/01")
+    
+    Dim i As Integer
+    For i = 0 To mailIndex - 1
+        Call form1.lastReceivedTimeOfItem(mail(i), lastUpdated)
+    Next i
+    
+    GetLastReceivedTime = lastUpdated
+End Function
+
 
 Private Sub tgtCtrl_ItemChange(ByVal Item As Object)
 
     Dim i As Integer
+
+    
     For i = 0 To UBound(mail)
         If mail(i).ConversationID = Item.ConversationID Then
             mail(i) = Item
@@ -66,14 +89,17 @@ Private Sub tgtCtrl_ItemChange(ByVal Item As Object)
     Next i
     
     
-    Call setMailToList
+    Dim lastUpdate As Date
+    lastUpdate = GetLastReceivedTime(mail)
+    
+    Call setMailToList(lastUpdate)
     
 
 End Sub
 
 
 
-Private Sub setMailToList()
+Private Sub setMailToList(ByVal lastUpdated As Date)
     Dim arrSubItems As Variant
     Dim count_new_mail As Integer
     Dim count_unreadItem  As Integer
@@ -88,8 +114,8 @@ Private Sub setMailToList()
     count_unreadItem = 0
     count_noFlag_new_mail = 0
     count_noFlagItem = 0
-    lastReceivedTimeOfNewMail = DateValue("2000/01/01")
-    lastReceivedTimeOfUnRead = DateValue("2000/01/01")
+    lastReceivedTimeOfNewMail = lastUpdated
+    lastReceivedTimeOfUnRead = lastUpdated
     arrSubItems = form.GetSubItems(tgtFolder)
     
     Dim i As Integer
