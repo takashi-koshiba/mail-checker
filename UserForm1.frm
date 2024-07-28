@@ -126,12 +126,7 @@ Private Sub setColorButton(selectedButton As String, selectedSlider As color2, l
     greenslider.Visible = True
     blueslider.Visible = True
     
-    If Not selectedButton = "default" Then
-        enableButton.Visible = True
-    Else
-        enableButton.Visible = False
-        
-    End If
+
     
     selectedColorButton = selectedButton
     selectedSlider.SetSlider
@@ -153,16 +148,6 @@ Private Sub del_allowed_folder_button_Click()
 End Sub
 
 
-   
-Private Sub enableButton_Click()
-    If IsEnableColor(selectedColorLabel) Then
-       selectedColorLabel.ForeColor = 255
-    Else
-        selectedColorLabel.ForeColor = -2147483630
-    
-    End If
-    
-End Sub
 
 Private Function IsEnableColor(label As label)
     Dim result As Boolean
@@ -279,6 +264,7 @@ Private Sub greenslider_Change()
     
     Call changeColor
 End Sub
+
 
 
 Private Sub MultiPage1_Change()
@@ -436,7 +422,6 @@ Private Sub UserForm_Initialize()
     
     colorStatus = 0
     
-    enableButton.Visible = False
     
     
     Set defaultColor = New color2
