@@ -160,11 +160,11 @@ Private Sub tgtFolder_BeforeItemMove(ByVal Item As Object, ByVal MoveTo As MAPIF
     If UBound(mail) = 0 Then
         ReDim mail(0)
         mailIndex = 0
-        Call setMailToList
+        Call setMailToList(DateValue("2000/01/01"))
     ElseIf i <> ii Then
         ReDim Preserve mail(UBound(mail) - 1)
         mailIndex = UBound(mail) + 1
-        Call setMailToList
+        Call setMailToList(DateValue("2000/01/01"))
     End If
     
 
