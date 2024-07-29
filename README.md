@@ -8,7 +8,7 @@ Outlookメールの件数を表示します。
 
 <ol>
   <li>
-    アップロードされているファイルをダウンロードします。
+    <a href="https://github.com/takashi-koshiba/mail-checker/releases">ここ</a>からファイルをダウンロードします。
   </li>
   <li>
     Outlookを起動してALT+F11キーを押下します。
