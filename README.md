@@ -55,7 +55,7 @@ Outlookメールの件数を表示します。
 
 <h1>監視するフォルダを設定</h1>
 <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/173731813/352859698-d8ae783b-746d-42ac-9cad-bc2c6b571551.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240728%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240728T182547Z&X-Amz-Expires=300&X-Amz-Signature=56c9330693fb63f95372bfb48a9584c31a0b0b664ef65e9e3a80cbdcefa2e8e4&X-Amz-SignedHeaders=host&actor_id=173731813&key_id=0&repo_id=822262477">
-<p>左のリストからフォルダを選択し右のリストに追加するとそのフォルダを監視できます。</p>
+<p>左のリストからフォルダを選択し右のリストに追加するとそのフォルダのメール件数を監視できます。</p>
 
 
 <h1>既知のバグ</h1>
