@@ -2,6 +2,7 @@
 
 Outlookメールの件数を表示します。
 
+進捗率：90%
 
 <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/173731813/352861977-b0376ad8-c179-4739-8354-91be3c9f4e44.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240728%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240728T191229Z&X-Amz-Expires=300&X-Amz-Signature=bc2405560c5472ffe43e54b935298e953ddc34ffab17bf3d1e75704a9d7fbd16&X-Amz-SignedHeaders=host&actor_id=173731813&key_id=0&repo_id=822262477">
 <h1>準備</h1>
