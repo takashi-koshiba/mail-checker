@@ -15,6 +15,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 
+
 Option Explicit
 
 'Private WithEvents InboxItems As Outlook.Items
@@ -875,7 +876,7 @@ Public Function GetSubItems(ByVal folder As folder) As Variant
     Dim Item As Variant
     For Each Item In allowed_folderList.ListItems
         If folder.folderPath = Item Then
-            GetSubItems = Array(Item.SubItems(1), Item.SubItems(2))
+            GetSubItems = Array(Item.ListSubItems.Item(1), Item.ListSubItems.Item(2))
             Exit For
             
         End If
@@ -904,7 +905,8 @@ Public Sub AddNumberOfMailToList(count_unreadItem As Integer, count_noFlagItem A
         Dim lastReceivedTimeOfUnRead As Date
         lastReceivedTimeOfNewMail = DateValue("2000/01/01")
         lastReceivedTimeOfUnRead = DateValue("2000/01/01")
-               
+        
+        Call subfolderCtl(list_index).setForm(Me)
         Dim mail_item As Variant
         For Each mail_item In sortmail_item
             
@@ -921,7 +923,7 @@ Public Sub AddNumberOfMailToList(count_unreadItem As Integer, count_noFlagItem A
                         
                         'メールを配列にいれる
                         
-                        Call subfolderCtl(list_index).setmail(mail_item)
+                        Call subfolderCtl(list_index).setMail(mail_item)
                         
                         Call countMail(rootFolder, mail_item, arrSubItems, count_new_mail, count_unreadItem, count_noFlag_new_mail, count_noFlagItem, lastReceivedTimeOfNewMail, lastReceivedTimeOfUnRead)
                     End If
@@ -936,10 +938,10 @@ Public Sub AddNumberOfMailToList(count_unreadItem As Integer, count_noFlagItem A
                 End If
                 
             End If
-            
-
+             
         Next mail_item
-                
+        Call subfolderCtl(list_index).setMailArr
+
         'リストを追加せず置き換えるか
         If IsReplaceItems Then
             
@@ -957,7 +959,7 @@ Public Sub AddNumberOfMailToList(count_unreadItem As Integer, count_noFlagItem A
             Call AddNewItemToList(newMailListView, folder.folderPath, subfolder.Name, CStr(count_new_mail), CStr(count_noFlag_new_mail), lastReceivedTimeOfNewMail, arrSubItems, True)
                 
             'メールアイテムにイベントを追加
-            Call subfolderCtl(list_index).SetCtrl(subfolder.Items, form, subfolder, Application.ActiveExplorer)
+            Call subfolderCtl(list_index).SetCtrl(subfolder.Items, subfolder, Application.ActiveExplorer)
             'list_index
         End If
         

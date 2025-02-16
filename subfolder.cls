@@ -24,26 +24,49 @@ Private mail() As Outlook.mailItem
 Private WithEvents myOlExp  As Outlook.Explorer
 Attribute myOlExp.VB_VarHelpID = -1
 
+Private mailEvent() As mailEvent
 
+Public Sub setForm(form As UserForm1)
+    mailIndex = 0
+    Set form1 = form
+End Sub
 
-
-Public Sub SetCtrl(ByVal new_item As Outlook.Items, form As UserForm, folder As folder, exp As Outlook.Explorer)
+Public Sub SetCtrl(ByVal new_item As Outlook.Items, folder As folder, exp As Outlook.Explorer)
   Set tgtCtrl = new_item
-  Set form1 = form
+  
   Set tgtFolder = folder
   Set myOlExp = exp
   
 
 End Sub
 
-Public Sub setmail(mailItem As Variant)
+Public Sub setMail(mailItem As Variant)
     ReDim Preserve mail(mailIndex)
+    ReDim Preserve mailEvent(mailIndex)
+    
+    
     Set mail(mailIndex) = mailItem
+    Set mailEvent(mailIndex) = New mailEvent
+   Set mailEvent(mailIndex).Item = mailItem
+     mailEvent(mailIndex).setMail form1
     mailIndex = mailIndex + 1
     
 End Sub
 
 
+Public Sub setMailArr()
+    Dim i As Integer
+    On Error Resume Next
+    
+    For i = 0 To UBound(mail)
+          mailEvent(i).setMailArrEnd mail
+
+    Next i
+    
+   
+On Error GoTo 0
+
+End Sub
 
 
 Private Sub myOlExp_SelectionChange()
@@ -51,7 +74,7 @@ Private Sub myOlExp_SelectionChange()
 End Sub
 
 Private Sub tgtCtrl_ItemAdd(ByVal Item As Object)
-    Call setmail(Item)
+    Call setMail(Item)
     
     Dim lastUpdate As Date
     
@@ -76,26 +99,7 @@ Private Function GetLastReceivedTime(mail() As Outlook.mailItem) As Date
 End Function
 
 
-Private Sub tgtCtrl_ItemChange(ByVal Item As Object)
 
-    Dim i As Integer
-
-    
-    For i = 0 To UBound(mail)
-        If mail(i).ConversationID = Item.ConversationID Then
-            mail(i) = Item
-        End If
-        
-    Next i
-    
-    
-    Dim lastUpdate As Date
-    lastUpdate = GetLastReceivedTime(mail)
-    
-    Call setMailToList(lastUpdate)
-    
-
-End Sub
 
 
 
@@ -145,6 +149,34 @@ Private Sub setMailToList(ByVal lastUpdated As Date)
 
 End Sub
 
+
+Private Sub tgtCtrl_ItemChange(ByVal Item As Object)
+  Dim i As Integer
+     
+    On Error Resume Next
+    Dim index As Integer
+    index = UBound(mail)
+    If index > 0 Then
+    
+        For i = 0 To UBound(mail)
+            If mail(i).ConversationID = Item.ConversationID Then
+                mail(i) = Item
+            End If
+         mailEvent(i).setMail form1
+         Next i
+    
+    
+        Dim lastUpdate As Date
+        lastUpdate = GetLastReceivedTime(mail)
+        
+        Call setMailToList(lastUpdate)
+    End If
+    
+    
+     On Error GoTo 0
+
+    
+End Sub
 
 Private Sub tgtFolder_BeforeItemMove(ByVal Item As Object, ByVal MoveTo As MAPIFolder, Cancel As Boolean)
     Dim i As Integer
